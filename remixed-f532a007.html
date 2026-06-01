@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramco Cements Internship Report - Ajay S</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #E55100;
+            --primary-dark: #B83C00;
+            --accent-blue: #0051BA;
+            --light-bg: #F5F5F5;
+            --text-dark: #1a1a1a;
+            --text-light: #555;
+            --border-color: #DDD;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            line-height: 1.6;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        header .meta {
+            font-size: 0.95em;
+            opacity: 0.85;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation Tabs */
+        nav {
+            background: white;
+            padding: 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 16px 20px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .nav-btn.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .card h3 {
+            color: var(--accent-blue);
+            margin: 20px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-caption {
+            padding: 15px;
+            background: var(--light-bg);
+            font-size: 0.9em;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: var(--light-bg);
+        }
+
+        /* Charts Container */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 25px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        /* Production Process */
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+        }
+
+        .process-arrow {
+            font-size: 1.5em;
+            color: var(--primary-color);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        /* Key Takeaways */
+        .takeaway-item {
+            background: linear-gradient(135deg, rgba(229, 81, 0, 0.05), rgba(0, 81, 186, 0.05));
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .takeaway-item strong {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .nav-btn {
+                min-width: 100px;
+                padding: 12px 15px;
+                font-size: 0.85em;
+            }
+
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-flow {
+                flex-direction: column;
+            }
+
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            nav, footer {
+                display: none;
+            }
+
+            section {
+                display: block !important;
+                page-break-inside: avoid;
+            }
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 99;
+            font-size: 1.5em;
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>RAMCO CEMENTS INTERNSHIP REPORT</h1>
+    <p class="subtitle">Finance & Accounts Department</p>
+    <div class="meta">
+        <p><strong>Intern:</strong> Ajay S | <strong>Duration:</strong> 4 Weeks | <strong>Location:</strong> Virudhunagar Unit, Tamil Nadu</p>
+    </div>
+</header>
+
+<nav>
+    <div class="nav-container">
+        <button class="nav-btn active" onclick="showSection('overview')">Overview</button>
+        <button class="nav-btn" onclick="showSection('company')">Company Profile</button>
+        <button class="nav-btn" onclick="showSection('production')">Production</button>
+        <button class="nav-btn" onclick="showSection('departments')">Departments</button>
+        <button class="nav-btn" onclick="showSection('finance')">Finance Insights</button>
+        <button class="nav-btn" onclick="showSection('takeaways')">Takeaways</button>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- OVERVIEW SECTION -->
+    <section id="overview" class="active">
+        <div class="card">
+            <h2>📋 Internship Overview</h2>
+            <p>This report documents my four-week internship at <strong>Ramco Cements Limited, Virudhunagar Unit</strong>, one of India's leading cement manufacturers. During this period, I gained comprehensive exposure to various departments including Production, Finance, HR, Marketing, R&D, Logistics, and Safety.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Weeks Duration</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Departments Observed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">6th</div>
+                    <div class="stat-label">Largest Cement Producer</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">MTPA Capacity</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🎯 Objectives</h3>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li style="margin-bottom: 10px;">Understand large-scale cement manufacturing processes and operations</li>
+                <li style="margin-bottom: 10px;">Observe departmental workflows and cross-functional coordination</li>
+                <li style="margin-bottom: 10px;">Apply classroom learning to real-world industrial scenarios</li>
+                <li style="margin-bottom: 10px;">Gain insights into cost management, quality control, and sustainability practices</li>
+                <li style="margin-bottom: 10px;">Develop professional competencies and industry awareness</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- COMPANY PROFILE SECTION -->
+    <section id="company">
+        <div class="card">
+            <h2>🏢 Company Profile: Ramco Cements</h2>
+            <p><strong>Ramco Cements Limited</strong> (formerly Madras Cements Limited) is one of India's most reputed cement manufacturers. Headquartered in Chennai, Tamil Nadu, it operates as the flagship company of the Ramco Group.</p>
+
+            <h3>Company Highlights</h3>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <td><strong>Founded</strong></td>
+                    <td>1957 (as Madras Cements Limited)</td>
+                </tr>
+                <tr>
+                    <td><strong>Headquarters</strong></td>
+                    <td>Chennai, Tamil Nadu, India</td>
+                </tr>
+                <tr>
+                    <td><strong>First Plant</strong></td>
+                    <td>1961 - Ramasamy Raja Nagar, Virudhunagar</td>
+                </tr>
+                <tr>
+                    <td><strong>Industry Rank</strong></td>
+                    <td>6th Largest Cement Producer in India</td>
+                </tr>
+                <tr>
+                    <td><strong>Cement Capacity</strong></td>
+                    <td>23 MTPA (Million Tonnes Per Annum)</td>
+                </tr>
+                <tr>
+                    <td><strong>Clinker Capacity</strong></td>
+                    <td>16 MTPA</td>
+                </tr>
+                <tr>
+                    <td><strong>Employees</strong></td>
+                    <td>3,600+</td>
+                </tr>
+                <tr>
+                    <td><strong>Revenue (FY 2023-24)</strong></td>
+                    <td>₹9,392 Crores</td>
+                </tr>
+                <tr>
+                    <td><strong>Operating Plants</strong></td>
+                    <td>11 Integrated & Grinding Units</td>
+                </tr>
+                <tr>
+                    <td><strong>Dealer Network</strong></td>
+                    <td>9,400+ Dealers | 23,500+ Sub-dealers</td>
+                </tr>
+            </table>
+
+            <h3>🌍 Manufacturing Presence</h3>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Count</th>
+                </tr>
+                <tr>
+                    <td>Integrated Plants</td>
+                    <td>Virudhunagar (TN), Alathiyur (TN), Govinda Puram (TN), Jayanthi Puram (AP), Kalavatala (AP)</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Grinding Units</td>
+                    <td>Tamil Nadu, Andhra Pradesh, West Bengal, Odisha, Karnataka</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>Other Facilities</td>
+                    <td>RMC Plants, Packing Terminals, Wind Farms (166 MW)</td>
+                    <td>Multiple</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>📈 Historical Growth Timeline</h3>
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Milestone</th>
+                </tr>
+                <tr>
+                    <td><strong>1957</strong></td>
+                    <td>Establishment of Madras Cements Limited</td>
+                </tr>
+                <tr>
+                    <td><strong>1961</strong></td>
+                    <td>First cement plant at Ramasamy Raja Nagar, Virudhunagar (200 TPD capacity)</td>
+                </tr>
+                <tr>
+                    <td><strong>1970s</strong></td>
+                    <td>Upgrade to dry process technology for enhanced efficiency</td>
+                </tr>
+                <tr>
+                    <td><strong>1987</strong></td>
+                    <td>Expansion into Andhra Pradesh with Jayanthipuram plant</td>
+                </tr>
+                <tr>
+                    <td><strong>1990s-2000s</strong></td>
+                    <td>Diversification into RMC, Dry Mortar, and Wind Power generation</td>
+                </tr>
+                <tr>
+                    <td><strong>2010s-Present</strong></td>
+                    <td>Rapid capacity expansion, WHRS adoption, expansion into Eastern India</td>
+                </tr>
+            </table>
+
+            <h3>🏆 Vision, Mission & Values</h3>
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                <p><strong>Vision:</strong> "Build, Strengthen, Nurture" – to be the most trusted construction solutions partner.</p>
+                <p style="margin-top: 10px;"><strong>Mission:</strong> Create innovative, application-specific products that meet evolving customer needs while upholding ethics, sustainability, and long-term relationships.</p>
+                <p style="margin-top: 10px;"><strong>Core Values:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Customer satisfaction and trust</li>
+                    <li>Commitment to quality and technology</li>
+                    <li>Belief in human resources and participative management</li>
+                    <li>Ethical growth aligned with community development</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🌱 Sustainability & Innovation</h3>
+            <p>Ramco Cements is recognized as a pioneer in green initiatives:</p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li style="margin-bottom: 10px;"><strong>Wind Power:</strong> Among the earliest adopters (1993); currently has 166 MW wind capacity</li>
+                <li style="margin-bottom: 10px;"><strong>WHRS:</strong> 43 MW Waste Heat Recovery Systems installed, reducing fossil fuel dependency</li>
+                <li style="margin-bottom: 10px;"><strong>Blended Cements:</strong> Leader in PPC & PSC that reduce clinker usage and carbon footprint</li>
+                <li style="margin-bottom: 10px;"><strong>Circular Economy:</strong> Uses fly ash, slag, and alternative fuels in production</li>
+                <li style="margin-bottom: 10px;"><strong>Water Management:</strong> Rainwater harvesting, mine reclamation, biodiversity conservation</li>
+            </ul>
+
+            <h3 style="margin-top: 25px;">📜 Certifications & Awards</h3>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li style="margin-bottom: 8px;">ISO 9001:2015 (Quality Management)</li>
+                <li style="margin-bottom: 8px;">ISO 14001:2015 (Environmental Management)</li>
+                <li style="margin-bottom: 8px;">OHSAS 18001 (Occupational Health & Safety)</li>
+                <li style="margin-bottom: 8px;">ZEE Business Excellence Award</li>
+                <li style="margin-bottom: 8px;">Greentech Award</li>
+                <li style="margin-bottom: 8px;">FIMI Award</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- PRODUCTION SECTION -->
+    <section id="production">
+        <div class="card">
+            <h2>🏭 Cement Production Process</h2>
+            <p>The production of cement is a systematic and energy-intensive process that transforms raw materials into a fine powdered material widely used in construction. At Ramco Cements, the process follows modern technology and stringent quality standards.</p>
+
+            <h3>Production Process Flow</h3>
+            <div class="process-flow">
+                <div class="process-step">Mining & Extraction</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Crushing & Pre-blending</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Raw Meal Grinding</div>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">Preheating & Calcination</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Clinkerization (Rotary Kiln)</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Clinker Cooling</div>
+            </div>
+            <div class="process-flow">
+                <div class="process-step">Cement Grinding</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Storage & Packing</div>
+                <div class="process-arrow">→</div>
+                <div class="process-step">Dispatch</div>
+            </div>
+
+            <h3 style="margin-top: 30px;">📍 Detailed Process Steps</h3>
+            
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>1. Mining of Raw Materials</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Limestone (70-90% of mix) is extracted from captive mines using advanced surface miners instead of traditional blasting, reducing dust and noise pollution. Other materials like clay, laterite, bauxite, and iron ore are also sourced.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>2. Crushing and Pre-blending</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Large limestone rocks are reduced to ~20 mm size in crushers. The crushed material is stored and homogenized using stackers and reclaimers to achieve uniform chemical composition.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>3. Raw Meal Grinding</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Crushed limestone, clay, and corrective materials are fed into Vertical Roller Mills (VRM) to produce fine powder called raw meal. Online X-ray analysers continuously check composition and maintain correct ratios.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>4. Preheating and Calcination</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Raw meal is heated in a five-stage preheater tower (850°C). Calcium carbonate decomposes into calcium oxide and carbon dioxide, reducing the kiln's energy load.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>5. Clinkerization (Rotary Kiln)</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">The heart of cement manufacturing. Calcined meal enters a rotating cylindrical kiln at temperatures up to 1450°C, forming clinker nodules (3-25 mm). Most energy-intensive stage.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>6. Clinker Cooling</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Hot clinker (~1200°C) is cooled rapidly in a grate cooler. Recovered hot air is reused in the kiln/preheater, improving energy efficiency.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>7. Cement Grinding</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Clinker is mixed with gypsum (3-5%) to regulate setting time and fly ash/slag for blended cements. Finely ground in VRMs, then tested for fineness, setting time, and strength.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>8. Storage & Packing</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Cement is stored in large silos to prevent moisture absorption. Automated rotary packers fill 50 kg bags. Bulk dispatch available for large projects and RMC plants.</p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--primary-color);">
+                <strong>9. Dispatch & Distribution</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Cement is dispatched via trucks, rail wagons, and bulk carriers to dealers, construction sites, and export markets. Virudhunagar unit has well-connected logistics for timely delivery.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📊 Production Capacity & Raw Materials</h3>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Specification</th>
+                </tr>
+                <tr>
+                    <td>Cement Production</td>
+                    <td>23 MTPA (Million Tonnes Per Annum)</td>
+                </tr>
+                <tr>
+                    <td>Clinker Capacity</td>
+                    <td>16 MTPA</td>
+                </tr>
+                <tr>
+                    <td>Wind Power Capacity</td>
+                    <td>166 MW</td>
+                </tr>
+                <tr>
+                    <td>WHRS Capacity</td>
+                    <td>43 MW</td>
+                </tr>
+                <tr>
+                    <td>Primary Raw Material</td>
+                    <td>Limestone (70-90% of mix)</td>
+                </tr>
+                <tr>
+                    <td>Additional Materials</td>
+                    <td>Clay, Laterite, Bauxite, Iron Ore, Gypsum, Fly Ash, Slag</td>
+                </tr>
+                <tr>
+                    <td>Kiln Temperature</td>
+                    <td>Up to 1450°C</td>
+                </tr>
+                <tr>
+                    <td>Clinker Size</td>
+                    <td>3-25 mm (nodules)</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- DEPARTMENTS SECTION -->
+    <section id="departments">
+        <div class="card">
+            <h2>🔍 Department-wise Observations</h2>
+            <p>During my internship, I observed 9 key departments working cohesively to ensure smooth operations and company growth:</p>
+
+            <h3 style="margin-top: 25px;">1. Production Department</h3>
+            <p><strong>Role:</strong> The backbone of Ramco Cements, ensuring continuous and efficient cement manufacturing.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Modern technology adoption (VRMs, rotary kilns, preheaters)</li>
+                <li>Stringent quality control at each production stage</li>
+                <li>Advanced surface mining reducing environmental impact</li>
+                <li>Automated packing ensuring consistency and efficiency</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">2. Human Resource (HR) Department</h3>
+            <p><strong>Key Responsibilities:</strong> Recruitment, training, performance management, employee welfare, industrial relations, and safety compliance.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Structured recruitment process focusing on fit and attitude</li>
+                <li>Continuous training in technical and soft skills</li>
+                <li>Comprehensive employee welfare programs (housing, medical, education)</li>
+                <li>Strong industrial relations maintaining peaceful work environment</li>
+                <li>Regular safety drills and PPE enforcement</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">3. Finance Department</h3>
+            <p><strong>Key Responsibilities:</strong> Cost management, budgeting, accounts payable/receivable, statutory compliance, and financial reporting.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Meticulous cost monitoring and control mechanisms</li>
+                <li>Annual budgeting with regular variance analysis</li>
+                <li>Strong cash flow management through efficient accounts management</li>
+                <li>Statutory compliance with GST, corporate income tax, labor payments</li>
+                <li>Monthly and quarterly financial statements for strategic decision-making</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">4. Marketing Department</h3>
+            <p><strong>Key Responsibilities:</strong> Market research, dealer network management, brand promotion, customer support (MACE), and export marketing.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Data-driven demand analysis across 8+ regions</li>
+                <li>Extensive dealer network (9,400+ dealers, 23,500+ sub-dealers)</li>
+                <li>Unique MACE program providing technical expertise to customers</li>
+                <li>Strong brand positioning emphasizing quality and trust</li>
+                <li>Export operations to Sri Lanka and beyond</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">5. Research & Development (R&D)</h3>
+            <p><strong>Key Responsibilities:</strong> Product innovation, blended cement development, sustainability initiatives, and process improvement.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Continuous development of specialized cements (Supercrete, Super Steel)</li>
+                <li>Eco-friendly blended cements using fly ash and slag</li>
+                <li>Collaboration with universities and research institutes</li>
+                <li>Field trials and demo sessions for practical validation</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">6. Logistics Department</h3>
+            <p><strong>Key Responsibilities:</strong> Storage, dispatch, dealer supply coordination, transport management, and cost optimization.</p>
+            <p><strong>Key Observations:</strong></p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Multi-modal dispatch (road, rail, sea) ensuring cost efficiency</li>
+                <li>GPS-based tracking for real-time monitoring</li>
+                <li>ERP systems for inventory and dispatch planning</li>
+                <li>Optimal route planning reducing transport costs</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">7. Quality Control Department</h3>
+            <p><strong>Key Focus:</strong> Ensuring cement meets international quality standards at every production stage.</p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Testing for fineness, setting time, compressive strength</li>
+                <li>X-ray analysis for composition verification</li>
+                <li>Compliance with IS 269:2015 and international standards</li>
+            </ul>
+
+            <h3 style="margin-top: 20px;">8. Procurement Department</h3>
+            <p><strong>Key Responsibilities:</strong> Sourcing raw materials, vendor management, contract negotiation, and supply chain optimization.</p>
+
+            <h3 style="margin-top: 20px;">9. Safety & Environment Department</h3>
+            <p><strong>Key Focus:</strong> Workplace safety, environmental protection, health monitoring, and sustainability.</p>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li>Mandatory PPE enforcement (helmets, gloves, safety shoes)</li>
+                <li>Advanced dust collection and emission monitoring systems</li>
+                <li>Periodic health check-ups and wellness programs</li>
+                <li>ISO 14001 and ISO 45001 compliance</li>
+                <li>Community CSR initiatives and environmental awareness</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🔗 Departmental Interdependencies</h3>
+            <div class="chart-container">
+                <canvas id="deptChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINANCE INSIGHTS SECTION -->
+    <section id="finance">
+        <div class="card">
+            <h2>💰 Finance Department Insights</h2>
+            <p>The Finance Department is crucial for ensuring financial stability and smooth plant operations. My observations provided deep insights into cost management, budgeting, and financial planning.</p>
+
+            <h3>Key Financial Metrics (FY 2023-24)</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Revenue</td>
+                    <td>₹9,392 Crores</td>
+                </tr>
+                <tr>
+                    <td>PAT (Net Profit)</td>
+                    <td>₹395 Crores</td>
+                </tr>
+                <tr>
+                    <td>Capacity Utilization</td>
+                    <td>High efficiency through automation</td>
+                </tr>
+                <tr>
+                    <td>Major Cost Component</td>
+                    <td>Energy (power-intensive process)</td>
+                </tr>
+                <tr>
+                    <td>Other Costs</td>
+                    <td>Raw materials, packaging, transport, maintenance</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 25px;">📊 Cost Management Practices</h3>
+            <div class="charts-row">
+                <div class="chart-container">
+                    <canvas id="costBreakdown"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="budgetVsActual"></canvas>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 25px;">💼 Finance Functions</h3>
+            
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>1. Cost Management</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">The finance team monitors all major cost elements including raw materials, coal, power, packaging, transport, and maintenance. Special attention is given to energy costs as cement manufacturing is power-intensive. Analysis of production costs per tonne provides insights for efficiency improvements.</p>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>2. Budgeting and Planning</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Annual budgets are prepared by consolidating requirements from all departments. Regular budget vs. actual performance reviews are conducted to control deviations. Forecasting is done based on demand, raw material availability, and market conditions.</p>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>3. Accounts Management</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Timely payments to suppliers for raw materials and management of dealer/distributor accounts. Proper collection of dues from sales ensures smooth cash flow and maintains strong vendor relationships.</p>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>4. Statutory Compliance</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Ensures compliance with GST, corporate income tax, labor and welfare payments. All records maintained according to government norms, ensuring transparency and legal adherence.</p>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>5. Financial Reporting</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Monthly and quarterly financial statements prepared showing production costs, sales revenue, and profit margins. Key performance indicators include EBITDA margins, operating costs per tonne, and net profits.</p>
+            </div>
+
+            <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-blue);">
+                <strong>6. Inter-departmental Coordination</strong>
+                <p style="margin-top: 10px; color: var(--text-light);">Finance coordinates with Production (cost per unit), Procurement (vendor payments), HR (payroll), and Marketing (dealer incentives) to ensure efficient resource utilization.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📈 Performance Indicators</h3>
+            <table>
+                <tr>
+                    <th>Indicator</th>
+                    <th>Description</th>
+                    <th>Importance</th>
+                </tr>
+                <tr>
+                    <td>EBITDA Margin</td>
+                    <td>Operating profit as % of revenue</td>
+                    <td>Measures operational efficiency</td>
+                </tr>
+                <tr>
+                    <td>Cost per Tonne</td>
+                    <td>Total cost to produce one tonne</td>
+                    <td>Indicates production efficiency</td>
+                </tr>
+                <tr>
+                    <td>Working Capital</td>
+                    <td>Current assets minus current liabilities</td>
+                    <td>Shows financial liquidity</td>
+                </tr>
+                <tr>
+                    <td>Receivables Turnover</td>
+                    <td>Speed of collecting dealer dues</td>
+                    <td>Maintains cash flow health</td>
+                </tr>
+                <tr>
+                    <td>Debt-to-Equity</td>
+                    <td>Financial leverage ratio</td>
+                    <td>Indicates financial stability</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="products" class="active" style="display: none;">
+        <div class="card">
+            <h2>📦 Ramco Cements Product Portfolio</h2>
+            
+            <h3>Blended Cements</h3>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Key Features</th>
+                    <th>Applications</th>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Supergrade</strong></td>
+                    <td>High performance, durable</td>
+                    <td>Housing and infrastructure</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Super Steel</strong></td>
+                    <td>Enhanced impermeability, sulphate resistance</td>
+                    <td>Marine and water-adjacent structures</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Superfine EFC</strong></td>
+                    <td>Crack-resistant, early-hardening</td>
+                    <td>Housing and commercial construction</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Supercrete</strong></td>
+                    <td>Rapid hardening</td>
+                    <td>Precast items (hollow blocks, fly ash bricks)</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Super-Fast</strong></td>
+                    <td>Fast setting</td>
+                    <td>Time-sensitive applications</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Super Coast</strong></td>
+                    <td>Sulphate-resistant</td>
+                    <td>High sulphate exposure areas</td>
+                </tr>
+                <tr>
+                    <td><strong>Karthik Super Plus</strong></td>
+                    <td>Low heat of hydration</td>
+                    <td>Mass concrete structures</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Samudra</strong></td>
+                    <td>High early strength</td>
+                    <td>High-rise buildings, flyovers, runways</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 25px;">Ordinary Portland Cement (OPC)</h3>
+            <table>
+                <tr>
+                    <th>Grade</th>
+                    <th>Characteristics</th>
+                    <th>Applications</th>
+                </tr>
+                <tr>
+                    <td><strong>Ramco 53 Grade</strong></td>
+                    <td>High early strength</td>
+                    <td>Large projects requiring quick turnaround</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Infra 53</strong></td>
+                    <td>Infrastructure-grade, high strength</td>
+                    <td>Bridges, tunnels, metro railway works</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco 43 Grade</strong></td>
+                    <td>High strength</td>
+                    <td>General government and construction works</td>
+                </tr>
+                <tr>
+                    <td><strong>Ramco Infra 43</strong></td>
+                    <td>Specialized for nuclear applications</td>
+                    <td>Nuclear plants and specialized projects</td>
+                </tr>
+            </table>
+
+            <h3 style="margin-top: 25px;">Dry Mix Products</h3>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li style="margin-bottom: 10px;"><strong>Ramco Super Fine Cement-based Putty:</strong> For smooth walls and ceilings</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Block Fix:</strong> Adhesive for AAC/fly ash/concrete blocks</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Tile Fix:</strong> Adhesive for tiles, granite, marble (including underwater use)</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Super Plaster:</strong> General purpose plaster for internal and external use</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Eco Plast:</strong> Economical replacement to ordinary cement</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Tile Grout:</strong> Ready-to-use, durable tile grout</li>
+                <li style="margin-bottom: 10px;"><strong>Ramco Water Repellent Plaster:</strong> For external applications and wet areas</li>
+            </ul>
+
+            <h3 style="margin-top: 25px;">Other Solutions</h3>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li style="margin-bottom: 10px;"><strong>Ready-Mix Concrete (RMC):</strong> High-quality concrete for high-rise buildings, tunnels, overpasses, subways</li>
+                <li style="margin-bottom: 10px;"><strong>MACE Program:</strong> Marketing Assistance for Concrete Expertise – technical support service for right cement selection</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TAKEAWAYS SECTION -->
+    <section id="takeaways">
+        <div class="card">
+            <h2>💡 Key Takeaways from Internship</h2>
+            <p>My four-week internship at Ramco Cements provided invaluable insights that extended beyond cement manufacturing to encompass organizational excellence, operational efficiency, and professional development.</p>
+
+            <div class="takeaway-item">
+                <strong>1. Understanding Production Complexity</strong>
+                <p>Gained clear understanding of how cement is manufactured – from raw material mining to final dispatch. Learned the importance of each step, modern technology (VRMs, rotary kilns), and automation's role in ensuring efficiency. Appreciated the precision required in large-scale manufacturing.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>2. Marketing & Customer Engagement</strong>
+                <p>Learned that marketing in cement industry is not just about sales but relationship building and technical support. Observed Ramco's strong dealer network (9,400+ dealers), brand promotion strategies (MACE), and export operations. Understood customer-centric approach.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>3. Cross-Departmental Coordination</strong>
+                <p>Realized that no department works in isolation. Finance, Production, QC, HR, Marketing, Procurement, and Logistics are interdependent. Teamwork, communication, and coordination are essential for achieving organizational goals.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>4. Theory to Practice Bridge</strong>
+                <p>Many concepts studied in Operations Management, HRM, Finance, and Marketing came alive during internship. This experience bridged the gap between academic theory and real-world applications, making me more confident in practical application of classroom learning.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>5. Sustainability & Innovation</strong>
+                <p>Observed how leading companies balance profitability with environmental responsibility. Learned about Ramco's green initiatives (166 MW wind power, WHRS, blended cements) and their long-term strategic importance for business resilience.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>6. Cost Management Excellence</strong>
+                <p>Understood that in manufacturing, cost control is critical. Observed how Finance department meticulously monitors raw materials, energy, transport, and other costs. Learned importance of data-driven decision making in cost optimization.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>7. Quality and Compliance</strong>
+                <p>Appreciated that quality is non-negotiable. Observed stringent testing at every production stage, compliance with ISO standards, and continuous monitoring. Understood quality's role in maintaining brand reputation.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>8. Employee-Centric Approach</strong>
+                <p>Learned that company's success depends on employee satisfaction and engagement. Observed comprehensive welfare programs, safety protocols, training initiatives, and inclusive management practices. HR is truly strategic function.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>9. Professional Development</strong>
+                <p>Improved observation, analysis, and reporting skills. Interacting with professionals provided exposure to corporate culture, discipline, and work ethics. Boosted confidence and gave clarity about career paths in manufacturing and management.</p>
+            </div>
+
+            <div class="takeaway-item">
+                <strong>10. Organizational Excellence</strong>
+                <p>Observed how Ramco maintains reputation as trusted brand through continuous innovation, sustainability practices, and customer focus. Learned values of hard work, efficiency, integrity, and long-term thinking.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📈 Personal & Professional Growth</h3>
+            <p style="color: var(--text-light); line-height: 1.8;">The internship was a holistic learning experience where I not only understood cement manufacturing but also saw how different functional departments contribute to organizational growth. The exposure to real-time processes, quality standards, financial management, and sustainability practices has given me practical insights that will help in both academics and future professional endeavors.</p>
+
+            <p style="color: var(--text-light); line-height: 1.8; margin-top: 15px;">This experience bridged the gap between theory and practice, making me more confident in applying my academic knowledge in real-world situations. It has strengthened my understanding of business operations, inspired me to apply values of hard work and innovation, and clarified my career aspirations in the manufacturing and business management sector.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎓 Learning Outcomes</h3>
+            <ul style="margin-left: 20px; color: var(--text-light); line-height: 1.8;">
+                <li style="margin-bottom: 15px;">✓ Comprehensive understanding of cement manufacturing process and technology</li>
+                <li style="margin-bottom: 15px;">✓ Insights into organizational structure and departmental functions</li>
+                <li style="margin-bottom: 15px;">✓ Knowledge of cost management and financial planning in manufacturing</li>
+                <li style="margin-bottom: 15px;">✓ Understanding of quality control and compliance systems</li>
+                <li style="margin-bottom: 15px;">✓ Appreciation for sustainability and environmental responsibility</li>
+                <li style="margin-bottom: 15px;">✓ Practical experience with HR practices and employee management</li>
+                <li style="margin-bottom: 15px;">✓ Insights into marketing, sales, and customer engagement strategies</li>
+                <li style="margin-bottom: 15px;">✓ Enhanced analytical, observation, and reporting skills</li>
+                <li style="margin-bottom: 15px;">✓ Confidence in applying academic knowledge to practical scenarios</li>
+                <li style="margin-bottom: 15px;">✓ Clarity on career path in manufacturing and management</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CONCLUSION SECTION -->
+    <section id="conclusion" class="active" style="display: none;">
+        <div class="card">
+            <h2>📝 Conclusion</h2>
+            <p>My four-week internship at The Ramco Cements Limited, Virudhunagar Unit, has been a highly enriching and insightful experience. It provided me with the opportunity to observe and understand the functioning of a large-scale manufacturing organization and how different departments coordinate to achieve common objectives.</p>
+
+            <p style="margin-top: 15px;">Through exposure to Production, Quality Control, HR, Finance, Marketing, R&D, Logistics, Procurement, and Safety & Environment departments, I was able to connect theoretical concepts learned in academics with practical applications in real industrial setting. I observed how each department plays vital role in company's success – from producing high-quality cement and ensuring cost efficiency to maintaining employee welfare, strengthening brand presence, and upholding sustainability practices.</p>
+
+            <p style="margin-top: 15px;">The internship highlighted the importance of teamwork, discipline, safety, quality consciousness, and customer focus in organizational growth. More importantly, it gave insights into how Ramco Cements maintains its reputation as trusted brand by continuously innovating, adopting sustainable practices, and putting people at the centre of operations.</p>
+
+            <div style="background: linear-gradient(135deg, #FF6B35, #F7931E); color: white; padding: 25px; border-radius: 10px; margin-top: 25px;">
+                <p style="font-size: 1.1em; line-height: 1.8;"><strong>Overall, this internship has not only enhanced my knowledge of the cement industry but has also contributed to my personal and professional development. The experience has strengthened my confidence, improved my practical understanding of business operations, and inspired me to apply the values of hard work, efficiency, and innovation in my future career.</strong></p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2024 Ramco Cements Internship Report | Ajay S | BBA Graduate, VHNSN College, Virudhunagar</p>
+    <p style="margin-top: 10px; opacity: 0.8;">This comprehensive report documents a four-week internship experience at Ramco Cements Limited, Virudhunagar Unit</p>
+</footer>
+
+<div class="scroll-to-top" onclick="scrollToTop()">↑</div>
+
+<script>
+    // Navigation functionality
+    function showSection(sectionId) {
+        // Hide all sections
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => section.classList.remove('active'));
+        
+        // Show selected section
+        document.getElementById(sectionId).classList.add('active');
+        
+        // Update active nav button
+        const navBtns = document.querySelectorAll('.nav-btn');
+        navBtns.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+
+    // Scroll to top functionality
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.querySelector('.scroll-to-top');
+        if (window.scrollY > 300) {
+            scrollTop.classList.add('show');
+        } else {
+            scrollTop.classList.remove('show');
+        }
+    });
+
+    // Chart 1: Department Functions Pie Chart
+    const deptCtx = document.getElementById('deptChart');
+    if (deptCtx) {
+        new Chart(deptCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Production', 'Finance', 'HR', 'Marketing', 'R&D', 'Logistics', 'Quality', 'Procurement', 'Safety'],
+                datasets: [{
+                    data: [20, 15, 12, 10, 8, 12, 10, 8, 5],
+                    backgroundColor: [
+                        '#E55100', '#FF6B35', '#F7931E', '#FDB833',
+                        '#0051BA', '#1E90FF', '#4169E1', '#6495ED', '#87CEEB'
+                    ],
+                    borderColor: 'white',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { size: 12 }, padding: 15 }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Department Functions Distribution',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart 2: Cost Breakdown Bar Chart
+    const costCtx = document.getElementById('costBreakdown');
+    if (costCtx) {
+        new Chart(costCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Raw Materials', 'Energy/Power', 'Transport', 'Labor', 'Maintenance', 'Other'],
+                datasets: [{
+                    label: 'Cost Components (%)',
+                    data: [35, 28, 15, 12, 7, 3],
+                    backgroundColor: '#E55100',
+                    borderColor: '#B83C00',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Production Cost Breakdown',
+                        font: { size: 16, weight: 'bold' }
+                    },
+                    legend: { display: true }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 40,
+                        title: { display: true, text: 'Percentage' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart 3: Budget vs Actual
+    const budgetCtx = document.getElementById('budgetVsActual');
+    if (budgetCtx) {
+        new Chart(budgetCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [
+                    {
+                        label: 'Budgeted',
+                        data: [2300, 2500, 2400, 2800],
+                        backgroundColor: '#0051BA'
+                    },
+                    {
+                        label: 'Actual',
+                        data: [2100, 2400, 2550, 2700],
+                        backgroundColor: '#E55100'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Budget vs Actual Spending',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Amount (in Crores)' }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
